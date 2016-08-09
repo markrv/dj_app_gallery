@@ -1,0 +1,34 @@
+{% extends MAIN_TEMPLATE|default:"base.html" %}
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+{% load url from future %}
+
+{% block content %}
+    {% if gallery %}
+        <script src="/markrv/static/fancybox/jquery.fancybox.js"></script>
+        <link rel="stylesheet" href="/markrv/static/fancybox/jquery.fancybox.css">
+        {% for image in gallery %}
+            <div class="item-art col-sm-4">
+                <div class='image-preview-art'>
+                {% thumbnail image.image "300x300" crop="center" as im %}
+                    <a class="fancybox" rel='gallery-image[ilist]' href="{{ image.image.url }}" title="{{ image.title }}">
+                        <img class="preview" style="width: 100%;" src="{{ im.url }}" />
+                    </a>
+                {% endthumbnail %}
+                </div>
+                <div class='info-art'>
+                    <p> 4 : {{ image.title }}</p>
+                    <p> 3 : {{ image.technique|safe }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".fancybox").fancybox();
+            });
+        </script>
+    {% else %}
+        <p>Изображений пока нет.</p>
+    {% endif %}
+{% endblock %}
